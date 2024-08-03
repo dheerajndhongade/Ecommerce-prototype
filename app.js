@@ -1,6 +1,17 @@
-let http = require("http");
 let route = require("./routes");
-let server = http.createServer(route);
-server.listen("4000", () => {
-  console.log("server running at port 4000");
+
+let express = require("express");
+let app = express();
+
+app.use((req, res, next) => {
+  console.log("In the middleware");
+  next();
+});
+app.use((req, res, next) => {
+  console.log("In another middleware");
+  res.send(`<h1>Hello from express</h1>`);
+});
+
+app.listen(3000, () => {
+  console.log("server running at port 3000");
 });
