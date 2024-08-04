@@ -1,25 +1,24 @@
-let adminRoute = require("./routes/admin");
-let shopRoute = require("./routes/shop");
-let path = require("path");
-let contactRoute = require("./routes/contact");
-let routeDir = require("./util/path");
+const path = require('path');
 
-let express = require("express");
-let bodyParser = require("body-parser");
-let app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+const adminData = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/admin", adminRoute);
-app.use(shopRoute);
-app.use(contactRoute);
+app.use('/admin', adminData.routes);
+app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res
-    .status(404)
-    .sendFile(path.join(__dirname, "views", "Page-not-found.html"));
+  res.status(404).render('404', { pageTitle: 'Page Not Found' });
 });
 
-app.listen(3000, () => {
-  console.log("server running at port 3000");
-});
+app.listen(3000);
