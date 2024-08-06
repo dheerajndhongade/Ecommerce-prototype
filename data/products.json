@@ -6,5 +6,19 @@
     "description": "This is an awesome book!",
     "price": "19"
   },
-  { "title": "we", "imageUrl": "", "description": "", "price": "8" }
+  { "title": "we", "imageUrl": "", "description": "", "price": "8" },
+  {
+    "title": "Sathyarjun",
+    "imageUrl": "https://ibb.co/5nMYMHZ",
+    "description": "Does all household chores, very faithful, obeys all commands",
+    "price": "9",
+    "id": "0.8123244046523992"
+  },
+  {
+    "title": "Sathyarjun",
+    "imageUrl": "https://www.imghippo.com/i/LY8K61722935012.jpg",
+    "description": "faithful, obeys commands, free chain available ",
+    "price": "9",
+    "id": "0.19298813380793445"
+  }
 ]
