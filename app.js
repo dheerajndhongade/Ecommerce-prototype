@@ -4,14 +4,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const errorController = require("./controllers/error");
-const sequelize = require("./util/database");
-let Product = require("./models/product");
-let User = require("./models/user");
-let Cart = require("./models/cart");
-let CartItem = require("./models/cart-item");
+
+const mongoConnect = require("./util/database").mongoConnect;
 
 const app = express();
-let port = 3000;
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -23,12 +19,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  User.findByPk(1)
-    .then((user) => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => console.log(err));
+  // User.findById(1)
+  //   .then((user) => {
+  //     req.user = user;
+  //     next();
+  //   })
+  //   .catch((err) => console.log(err));
+  next();
 });
 
 app.use("/admin", adminRoutes);
@@ -36,33 +33,7 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
-
-sequelize
-  //.sync({ force: true })
-  .sync()
-  .then((result) => {
-    return User.findByPk(1);
-    //console.log(res);
-  })
-  .then((user) => {
-    if (!user) {
-      return User.create({ name: "max", email: "123@gmail.com" });
-    }
-    return user;
-  })
-  .then((user) => {
-    //console.log(user);
-    return user.createCart();
-  })
-  .then((cart) => {
-    app.listen(port, () => {
-      console.log(`Running in ${port} ;)`);
-    });
-  })
-  .catch((err) => console.log(err));
+mongoConnect(() => {
+  //console.log(client);
+  app.listen(3000);
+});
