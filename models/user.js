@@ -1,16 +1,31 @@
-// const mongodb = require('mongodb');
-// const getDb = require('../util/database').getDb;
+const mongoose = require("mongoose");
 
-// const ObjectId = mongodb.ObjectId;
+const Schema = mongoose.Schema;
 
-// class User {
-//   constructor(username, email, cart, id) {
-//     this.name = username;
-//     this.email = email;
-//     this.cart = cart; // {items: []}
-//     this._id = id;
-//   }
+const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  cart: {
+    items: [
+      {
+        productId: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, required: true },
+      },
+    ],
+  },
+});
 
+module.exports = mongoose.model("User", userSchema);
 //   save() {
 //     const db = getDb();
 //     return db.collection('users').insertOne(this);
@@ -124,5 +139,3 @@
 //       });
 //   }
 // }
-
-// module.exports = User;
